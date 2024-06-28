@@ -8,9 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-var openAiApiKey = "sk-proj-ywl34MTkxplnJGBGjA8ET3BlbkFJQrCBZEoqZ3yzKe98J7Ny";
+var openAiApiKey = "";
+var openAiService = new OpenAIService1(openAiApiKey);
+var webInfoService = new WebsiteInfoService(openAiService);
 //builder.Services.AddSingleton(new OpenAIService(openAiApiKey));
-builder.Services.AddSingleton(new OnboardingService(new OpenAIService1(openAiApiKey), new BusinessRevenueService()));
+builder.Services.AddSingleton(webInfoService);
+builder.Services.AddSingleton(new OnboardingService(openAiService, new BusinessRevenueService(), new MccMockService(), new CompanyHouseMockService(), webInfoService));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

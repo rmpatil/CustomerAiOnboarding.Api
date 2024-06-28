@@ -2,8 +2,8 @@
 {
     public class OnboardingRequest
     {
-        public string FieldOne { get; set; }
-        public decimal AnnualTurnOver { get; set; }
-        public string FieldThree { get; set; }
+        public string CompanyName { get; set; }
+        public decimal CompanyRegisteredNumber { get; set; }
+        public string BusinessUrl { get; set; }
     }
 }

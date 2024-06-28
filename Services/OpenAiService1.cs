@@ -34,4 +34,25 @@ public class OpenAIService1
         var responseData = JObject.Parse(responseString);
         return responseData["choices"][0]["message"]["content"].ToString();
     }
+
+
+    public async Task<string> GenerateChatCompletionJObject(List<ChatMessage> messages)
+    {
+        var requestBody = new ChatRequest
+        {
+            Model = model,
+            Messages = messages
+        };
+        var jsonContent = new StringContent(JObject.FromObject(requestBody).ToString(), Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", jsonContent);
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"OpenAI API request failed with status code {response.StatusCode}: {errorContent}");
+        }
+        var responseString = await response.Content.ReadAsStringAsync();
+        return responseString;
+        //var responseData = JObject.Parse(responseString);
+        //return responseData["choices"][0]["message"]["content"];
+    }
 }
